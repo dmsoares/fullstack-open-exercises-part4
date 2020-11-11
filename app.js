@@ -5,6 +5,7 @@ const cors = require('cors')
 const blogsRouter = require('./controllers/blogs.js')
 const logger = require('./utils/logger.js')
 const config = require('./utils/config.js')
+const middleware = require('./utils/middleware.js')
 
 mongoose.connect(config.mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
     .then(() => logger.info('connected to mongodb'))
@@ -12,7 +13,10 @@ mongoose.connect(config.mongoUrl, { useNewUrlParser: true, useUnifiedTopology: t
 
 app.use(cors())
 app.use(express.json())
+app.use(middleware.requestLogger)
 
 app.use('/', blogsRouter)
+
+app.use(middleware.unknownEndpoint)
 
 module.exports = app
