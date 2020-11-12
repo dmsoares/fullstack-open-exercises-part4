@@ -25,15 +25,29 @@ const favoriteBlog = blogs => {
 
 const mostBlogs = blogs => {
   if (!blogs.length) return -1
-  const blogsPerAuthor = []
+  const likesPerAuthor = []
 
   blogs.forEach(blog => {
-    const index = blogsPerAuthor.findIndex(element => element.author === blog.author)
-    index > -1 ? blogsPerAuthor[index].blogs++ : blogsPerAuthor.push({ author: blog.author, blogs: 1 })  
+    const index = likesPerAuthor.findIndex(element => element.author === blog.author)
+    index > -1 ? likesPerAuthor[index].blogs++ : likesPerAuthor.push({ author: blog.author, blogs: 1 })  
   })
 
-  return blogsPerAuthor.find(author => {
-    return author.blogs === Math.max(...Object.values(blogsPerAuthor.map(author => author.blogs)))
+  return likesPerAuthor.find(author => {
+    return author.blogs === Math.max(...Object.values(likesPerAuthor.map(author => author.blogs)))
+  })
+}
+
+const mostLikes = blogs => {
+  if (!blogs.length) return -1
+  const likesPerAuthor = []
+
+  blogs.forEach(blog => {
+    const index = likesPerAuthor.findIndex(element => element.author === blog.author)
+    index > -1 ? likesPerAuthor[index].likes += blog.likes : likesPerAuthor.push({ author: blog.author, likes: blog.likes })  
+  })
+
+  return likesPerAuthor.find(author => {
+    return author.likes === Math.max(...Object.values(likesPerAuthor.map(author => author.likes)))
   })
 }
 
@@ -41,5 +55,6 @@ module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
